@@ -14,9 +14,7 @@ public class HelloWorldServlets extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
      String firstName = request.getParameter("firstName");
     String secondName = request.getParameter("secondName");
-    String hiddenParam = request.getParameter("hiddenParam");
-
-        String message = "HelloWorldServlets with Message!";
+    String message = "HelloWorldServlets with Message!";
         PrintWriter printWriter = response.getWriter();
 
         printWriter.println("<html lang='en'>");
