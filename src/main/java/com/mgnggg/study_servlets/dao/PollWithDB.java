@@ -6,44 +6,47 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PollWithDB {
-    public HashMap<String, Object> getQuestion(String questionsUid) throws SQLException {
+public class PollWithDB{
+    public ArrayList<HashMap> getAnswerList(String quesionsUid) throws SQLException{
 
+        Commons commons = new Commons();
+        Statement statement = commons.getStatement();
+        String query = "SELECT ANSWERS.QUESTIONS_UID, EXAMPLE_LIST.ORDERS, EXAMPLE_LIST.EXAMPLE " +
+                        "FROM ANSWERS "+
+                        "INNER JOIN EXAMPLE_LIST "+
+                        "ON ANSWERS.EXAMPLE_UID = EXAMPLE_LIST.EXAMPLE_UID "+
+                        "WHERE QUESTIONS_UID = '"+quesionsUid+"' " +
+                        "ORDER BY QUESTIONS_UID ";
+        ResultSet resultSet = statement.executeQuery(query);
 
-    Commons commons = new Commons();
-    Statement statement = commons.getStatement();
+        ArrayList<HashMap> answer_list = new ArrayList<HashMap>();
+        while(resultSet.next()){
+            HashMap<String, Object> answer = new HashMap<String, Object>();
+            answer.put("QUESTIONS_UID", resultSet.getString("QUESTIONS_UID"));
+            answer.put("ORDERS",resultSet.getInt("ORDERS"));
+            answer.put("EXAMPLE",resultSet.getString("EXAMPLE"));
 
-    String query = "SELECT * FROM QUESTIONS_LIST " + 
-                   "WHERE QUESTIONS_UID = '"+questionsUid+"'";
-
-    ResultSet resultSet= statement.executeQuery(query);
-    HashMap<String, Object> list = new HashMap<>();
-    HashMap<String, Object> question = new HashMap<>();
-    ArrayList<String> answers = new ArrayList<>();
-    while(resultSet.next()) {
-        question.put("QUESTION", resultSet.getString("QUESTIONS"));
-        question.put("ORDERS", resultSet.getInt("ORDERS"));
+            answer_list.add(answer);
+        }
+        return answer_list;
     }
-    Statement statement2 = commons.getStatement();
-    query = "SELECT ANSWERS.QUESTIONS_UID, EXAMPLE_LIST.ORDERS, EXAMPLE_LIST.EXAMPLE " +
-            "FROM ANSWERS " +
-            "INNER JOIN EXAMPLE_LIST " +
-            "ON ANSWERS.EXAMPLE_UID = EXAMPLE_LIST.EXAMPLE_UID " +
-            "WHERE QUESTIONS_UID = '" + questionsUid + "' " +
-            "ORDER BY QUESTIONS_UID; ";
+    public HashMap<String, Object> getQuestion(String questionsUid) throws SQLException{
 
-    ResultSet resultSet_Answer = statement2.executeQuery(query);
+        Commons commons = new Commons();
+        Statement statement = commons.getStatement();
 
-    while (resultSet_Answer.next()) {
-        answers.add(resultSet_Answer.getInt("ORDERS") + ". " + resultSet_Answer.getString("Example"));
+        String query = "SELECT * FROM QUESTIONS_LIST " +
+                        " WHERE QUESTIONS_UID = '"+questionsUid+"'";
+        
+        ResultSet resultSet = statement.executeQuery(query);
+        HashMap<String, Object> result = null;
+        while(resultSet.next()){
+            result = new HashMap<>();
+            result.put("QUESTIONS_UID",resultSet.getString("QUESTIONS_UID"));
+            result.put("QUESTIONS", resultSet.getString("QUESTIONS"));
+            result.put("ORDERS",resultSet.getInt("ORDERS"));
+        }
+
+        return result;
     }
-    list.put("QUESTION", question);
-    list.put("ANSWERS", answers);
-
-    return list;
-     }
-
-  
-    
 }
-

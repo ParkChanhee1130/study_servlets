@@ -25,12 +25,6 @@
     </div>
     <div>Form element</div>
     <div>
-      <form action="/helloWorldServlets" method="get">
-        <input type="text" name="firstName" id="" value="Chanhee" />
-        <input type="text" name="secondName" id="" value="Park" />
-        <input type="hidden" name="hiddenParam" value="yojulab" />
-        <button>helloWorldServlets</button>
-      </form>
       <form action="/searchFormServlet" method="get">
         <button>searchFormServlet</button>
       </form>
@@ -64,6 +58,19 @@
     </div>
     <div>
       <a href="/dispatcherJSPServlets">DispatcherJSPServlets</a>
+    </div>
+    <div>
+      <a href="/session/createServlets?username=chanhee&password=1234"
+        >/session/createServlets?username=chanhee&password=1234
+        createServlets.java</a
+      >
+    </div>
+    <div>
+      <form action="/session/createServlets" method="post">
+        <input type="text" name="username" id="" value="chanhee" />
+        <input type="text" name="password" id="" value="1234" />
+        <button>/session/createServlets with post</button>
+      </form>
     </div>
     <div>Cases</div>
     <div>
